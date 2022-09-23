@@ -8,7 +8,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },
     getSingleUser(req, res) {
-        User.findOne({ _id: req.params.userId })
+        User.findOne({ _id: req.params.id })
             .select('-__v')
             .populate('thoughts')
             .then((user) => user ? res.json(user) : res.status(404).json({ message: 'User not found in database' }))
@@ -21,7 +21,7 @@ module.exports = {
     },
     updateUser(req, res) {
         User.findOneAndUpdate(
-            { _id: req.body.id },
+            { _id: req.params.id },
             { $set: req.body },
             { runValidators: true, new: true}
         )
@@ -29,7 +29,7 @@ module.exports = {
             .catch((err) => res.status(500).json(err));
     },   
     deleteUser(req, res) {
-        User.findOneAndRemove({ _id: req.body.id })
+        User.findOneAndRemove({ _id: req.params.id })
             .then((user) => user ? res.json(user) : res.status(404).json({ message: 'User not found in database' }))
             .catch((err) => res.status(500).json(err));
     }
