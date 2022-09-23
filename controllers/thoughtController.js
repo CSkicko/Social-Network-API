@@ -53,7 +53,7 @@ module.exports = {
     deleteReaction(req, res) {
         Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $pull: { reactions: req.body } },
+            { $pull: { reactions: { reactionId: req.body.reactionId } } },
             { runValidators: true, new: true}
         )
         .then((thought) => {thought ? res.json(thought) : res.status(404).json({ message: 'Thought not found in database' })})
