@@ -1,5 +1,5 @@
 const { ObjectId } = require('mongoose').Types;
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 module.exports = {
     getUsers(req, res) {
@@ -33,7 +33,15 @@ module.exports = {
     },   
     deleteUser(req, res) {
         User.findOneAndRemove({ _id: req.params.id })
-            .then((user) => user ? res.json(user) : res.status(404).json({ message: 'User not found in database' }))
+            .then(async (user) => {
+                if(!user){
+                    res.status(404).json({ message: 'User not found in database' })
+                } 
+                await Thought.deleteMany({ _id: {
+                    $in: user.thoughts
+                }})
+                res.json(user)
+            })
             .catch((err) => res.status(500).json(err));
     },
     addFriend(req, res) {
