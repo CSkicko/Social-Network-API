@@ -5,6 +5,7 @@ module.exports = {
     getUsers(req, res) {
         User.find()
             .populate('thoughts')
+            .populate('friends')
             .then((users) => res.json(users))
             .catch((err) => res.status(500).json(err));
     },
@@ -12,6 +13,7 @@ module.exports = {
         User.findOne({ _id: req.params.id })
             .select('-__v')
             .populate('thoughts')
+            .populate('friends')
             .then((user) => user ? res.json(user) : res.status(404).json({ message: 'User not found in database' }))
             .catch((err) => res.status(500).json(err));
     },
@@ -59,7 +61,7 @@ module.exports = {
                 };
                 return User.findOneAndUpdate(
                     { _id: req.params.userId },
-                    { $pull: { friends: newFriend._id }},
+                    { $pull: { friends: deletedFriend._id }},
                     { new: true },
                 );
             })
