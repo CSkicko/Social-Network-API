@@ -33,5 +33,22 @@ module.exports = {
         User.findOneAndRemove({ _id: req.params.id })
             .then((user) => user ? res.json(user) : res.status(404).json({ message: 'User not found in database' }))
             .catch((err) => res.status(500).json(err));
+    },
+    addFriend(req, res) {
+        User.findOne({ _id: req.params.friendId })
+            .then((newFriend) => {
+                if(!newFriend){
+                    res.status(404).json({ message: 'Friend not found in database' });
+                };
+                return User.findOneAndUpdate(
+                    { _id: req.params.userId },
+                    { $addToSet: { friends: newFriend._id }},
+                    { new: true },
+                );
+            })
+            .then((user) => user ? res.json('Friend Added!') : res.status(404).json({ message: 'No user found with that id'}))
+            .catch((err) => {
+                res.status(500).json(err);
+            });
     }
 };
