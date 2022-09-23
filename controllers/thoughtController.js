@@ -8,8 +8,8 @@ module.exports = {
     },
     getSingleThought(req, res) {
         Thought.findOne({ _id: req.params.id })
-            .select('-__v')
-            .populate('reactions')
+            // .select('-__v')
+            // .populate('reactions')
             .then((thought) => thought ? res.json(thought) : res.status(404).json({ message: 'Thought not found in database'}))
             .catch((err) => res.status(500).json(err));
     },
