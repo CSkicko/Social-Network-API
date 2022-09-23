@@ -40,5 +40,23 @@ module.exports = {
         Thought.findOneAndRemove({ _id: req.params.id })
             .then((thought) => thought ? res.json(thought) : res.status(404).json({ message: 'Thought not found in database' }))
             .catch((err) => res.status(500).json(err));
+    },
+    createReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $addToSet: { reactions: req.body } },
+            { runValidators: true, new: true}
+        )
+        .then((thought) => {thought ? res.json(thought) : res.status(404).json({ message: 'Thought not found in database' })})
+        .catch((err) => res.status(500).json(err));
+    },
+    deleteReaction(req, res) {
+        Thought.findOneAndUpdate(
+            { _id: req.params.thoughtId },
+            { $pull: { reactions: req.body } },
+            { runValidators: true, new: true}
+        )
+        .then((thought) => {thought ? res.json(thought) : res.status(404).json({ message: 'Thought not found in database' })})
+        .catch((err) => res.status(500).json(err));
     }
 };
