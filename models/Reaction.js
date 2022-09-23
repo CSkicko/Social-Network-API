@@ -13,7 +13,8 @@ const reactionSchema = new Schema(
         },
         username: {
             type: String,
-            required: [true, "username is required"]
+            required: [true, "username is required"],
+            ref: 'user'
         },
         createdAt: {
             type: Date,
@@ -22,5 +23,13 @@ const reactionSchema = new Schema(
                 if (date) return date.toLocaleDateString();
             },
         }
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false,
     }
-)
+);
+
+module.exports = reactionSchema;
