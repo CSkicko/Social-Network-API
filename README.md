@@ -30,6 +30,7 @@ The application also comes with seed data to get started and explore the funtion
 ```
 npm run seed
 ```
+A walkthrough video demonstrating the app functionality can be found [here](/Walkthrough.mp4)
 
 ## Collaborators
 The following personnel have been involved in the devleopment of this application:
